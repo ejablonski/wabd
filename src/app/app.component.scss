@@ -1,0 +1,48 @@
+@import '../scss/_variables.scss';
+
+.wallpaper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-position: center center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-image: $default-wallpaper;
+}
+
+.main {
+    position: relative;
+    top: 10vh;
+    left: 15vw;
+    width: 70vw;
+    height: 80vh;
+}
+
+.nav {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 30px;
+    height: 30px;
+    background-color: $background-color;
+
+    .icon {
+        position: relative;
+        top: 20%;
+        left: 20%;
+        width: 60%;
+        height: 60%;
+        background-size: cover;
+        cursor: pointer;
+    }
+
+    .cog {
+        background-image: $icon-cog;
+    }
+
+    .back-arrow {
+        background-image: $icon-back-arrow;
+    }
+}
