@@ -1,17 +1,11 @@
-export class Widget {
-  whatever: string
+import { Component } from '@angular/core';
 
-  constructor(whatev: string) {
-    this.whatever = whatev
-  }
-}
+import { Widget } from 'src/app/interfaces';
 
+@Component({
+  selector: 'app-weather-widget',
+  templateUrl: './weather-widget.component.html',
+  styleUrls: ['./weather-widget.component.scss']
+})
 export class WeatherWidgetComponent extends Widget {
-  something: string
-
-  constructor(whatev: string, something: string) {
-    super(whatev)
-
-    this.something = something
-  }
 }

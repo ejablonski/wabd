@@ -3,7 +3,8 @@ import {
   OnInit
 } from '@angular/core';
 
-import { WeatherWidgetComponent, Widget } from '../weather-widget/weather-widget.component';
+import { WeatherWidgetComponent } from '../weather-widget/weather-widget.component';
+import { Widget } from 'src/app/interfaces';
 
 /**
  * This component is a widgets displaying container. Widgets (with a exception
@@ -21,8 +22,8 @@ export class WidgetsContainerComponent implements OnInit {
   constructor() {}
 
   ngOnInit(): void {
-    this.widgets.push(new Widget('foo'));
-    this.widgets.push(new WeatherWidgetComponent('weather', 'widget'))
-    this.widgets.push(new Widget('bar'))
+    this.widgets.push(new Widget());
+    this.widgets.push(new WeatherWidgetComponent())
+    this.widgets.push(new Widget())
   }
 }
