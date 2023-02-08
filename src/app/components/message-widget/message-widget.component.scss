@@ -1,0 +1,14 @@
+@import '../../../scss/variables';
+@import '../../../scss/fonts';
+
+.message-widget-container {
+  border-radius: $border-radius;
+  padding: $margin;
+  background-color: rgba(209, 25, 25, 0.7);
+
+  span, p {
+    margin: 0;
+    height: fit-content;
+    color: white;
+  }
+}

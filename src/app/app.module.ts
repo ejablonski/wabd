@@ -5,6 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { WidgetsContainerComponent } from './components/widgets-container/widgets-container.component';
 import { SettingsContainerComponent } from './components/settings-container/settings-container.component';
+import { MessageWidgetComponent } from './components/message-widget/message-widget.component';
 import { CountdownWidgetComponent } from './components/countdown-widget/countdown-widget.component';
 import { WeatherWidgetComponent } from './components/weather-widget/weather-widget.component';
 
@@ -13,6 +14,7 @@ import { WeatherWidgetComponent } from './components/weather-widget/weather-widg
     AppComponent,
     WidgetsContainerComponent,
     SettingsContainerComponent,
+    MessageWidgetComponent,
     CountdownWidgetComponent,
     WeatherWidgetComponent
   ],
