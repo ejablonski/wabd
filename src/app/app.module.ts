@@ -8,6 +8,7 @@ import { SettingsContainerComponent } from './components/settings-container/sett
 import { MessageWidgetComponent } from './components/message-widget/message-widget.component';
 import { CountdownWidgetComponent } from './components/countdown-widget/countdown-widget.component';
 import { WeatherWidgetComponent } from './components/weather-widget/weather-widget.component';
+import { DidYouKnowWidgetComponent } from './components/did-you-know-widget/did-you-know-widget.component';
 
 @NgModule({
   declarations: [
@@ -16,6 +17,7 @@ import { WeatherWidgetComponent } from './components/weather-widget/weather-widg
     SettingsContainerComponent,
     MessageWidgetComponent,
     CountdownWidgetComponent,
+    DidYouKnowWidgetComponent,
     WeatherWidgetComponent
   ],
   imports: [
