@@ -1,0 +1,52 @@
+<div class="settings-container">
+  <h1>Settings:</h1>
+  <form>
+    <div class="row">
+      <div class="form-group col-md">
+        <label for="latitude">Latitude</label>
+        <input type="number" class="form-control" id="latitude" placeholder="Latitude">
+      </div>
+      <div class="form-group col-md">
+        <label for="longitude">Longitude</label>
+        <input type="number" class="form-control" id="Longitude" placeholder="Longitude">
+      </div>
+    </div>
+    <fieldset class="form-group">
+      <div class="row">
+        <div class="form-group">
+          <legend class="col-form-label">Time format:</legend>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="timeFormat" id="timeFormat12" value="">
+            <label class="form-check-label" for="timeFormat12">
+                12 hours
+            </label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="timeFormat" id="timeFormat24" value="" checked>
+            <label class="form-check-label" for="timeFormat24">
+                24 hours
+            </label>
+          </div>
+        </div>
+      </div>
+    </fieldset>
+    <div class="row">
+      <div class="form-group">
+        <label for="tempFormat">Temperature format:</label>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="tempFormat" id="tempFormatC" value="" checked>
+          <label class="form-check-label" for="tempFormatC">
+              Celsius
+          </label>
+          </div>
+          <div class="form-check">
+          <input class="form-check-input" type="radio" name="tempFormat" id="tempFormatF" value="">
+          <label class="form-check-label" for="tempFormatF">
+              Fahrenheit
+          </label>
+        </div>
+      </div>
+    </div>
+  </form>
+  <h1>Widgets:</h1>
+</div>
