@@ -1,0 +1,20 @@
+@import '../../../scss/variables';
+@import '../../../scss/fonts';
+
+.countdown-widget-container {
+  border-radius: $border-radius;
+  padding: $margin;
+  background-color: rgba(0, 0, 0, 0.7);
+
+  span {
+    display: block;
+    width: 100%;
+    margin: 0;
+    height: fit-content;
+    color: white;
+
+    &.countdown-clock {
+        text-align: right;
+    }
+  }
+}
