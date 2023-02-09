@@ -17,6 +17,8 @@ import {
 import { WeatherDataModel } from '../models/weather-data.model';
 import { OpenMeteoDataModel } from '../models/open-meteo.model';
 
+import { SettingsService } from './settings.service';
+
 /**
  * This service is fetching data from OpenMeteo REST API. Covers version 1
  * of the API.
@@ -34,7 +36,10 @@ export class OpenMeteoService {
   private forcastEndpoint: string = 'https://api.open-meteo.com/v1/forecast'
   private airQualityEndpoint: string = 'https://air-quality-api.open-meteo.com/v1/air-quality'
   
-  constructor(private httpClient: HttpClient) {}
+  constructor(
+    private httpClient: HttpClient,
+    private settings: SettingsService
+  ) {}
   
   /**
    * Make an request for a forcast for today.
@@ -51,14 +56,14 @@ export class OpenMeteoService {
   
     requestParams = requestParams.appendAll(
       {
-        'latitude': 52.23,
-        'longitude': 21.01,
+        'latitude': this.settings.latitude,
+        'longitude': this.settings.longitude,
       }
     )
 
     forcastParams = requestParams.appendAll(
       {
-        'temperature_unit': 'celsius',
+        'temperature_unit': this.settings.tempUnit,
         'hourly': ['temperature_2m', 'snowfall', 'rain', 'showers']
       }
     )
