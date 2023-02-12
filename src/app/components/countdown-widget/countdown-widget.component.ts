@@ -1,4 +1,18 @@
-import { Component } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy
+} from '@angular/core';
+
+import {
+  Observable,
+  Subscription
+} from 'rxjs';
+import { tap } from 'rxjs/operators';
+
+import { ClockService } from 'src/app/services/clock.service';
+
+import { SettingsService } from 'src/app/services/settings.service';
 
 /**
  * Widget component that will countdown from set value and trigger an event
@@ -10,7 +24,46 @@ import { Component } from '@angular/core';
   templateUrl: './countdown-widget.component.html',
   styleUrls: ['./countdown-widget.component.scss']
 })
-export class CountdownWidgetComponent {
-  title: string = 'CountdownWidget'
-  time: number = 3600
+export class CountdownWidgetComponent implements OnInit, OnDestroy {
+  clockTick$: Observable<number> = new Observable<number>()
+  clockSubscription: Subscription = new Subscription()
+
+  title: string = this.settingsService.countdownWidgetSettings.title
+  messageWhenDone: string = this.settingsService.countdownWidgetSettings.messageWhenDone
+  countdownEnd: number = this.settingsService.countdownWidgetSettings.countdownEnd
+  countdownNow: number = new Date().getTime()
+  isDone: boolean = false
+
+  constructor(
+    private settingsService: SettingsService,
+    private clockService: ClockService) {}
+
+  ngOnInit(): void {
+    this.updateCountdown()
+    this.clockTick$ = this.clockService.clock
+    this.clockSubscription = this.clockTick$
+      .pipe(
+        tap(() => {
+          this.updateCountdown()
+        })
+      )
+      .subscribe()
+  }
+
+  ngOnDestroy(): void {
+    this.clockSubscription.unsubscribe()
+  }
+
+  /**
+   * Function that will update countadown timer.
+   * @param mod Interval of an update in milliseconds. If you updating for
+   * every second then leave it at 1000.
+   */
+  updateCountdown(mod: number = 1000): void {
+    if(this.countdownNow >= this.countdownEnd) {
+      this.isDone = true
+    } else {
+      this.countdownNow += mod
+    }
+  }
 }

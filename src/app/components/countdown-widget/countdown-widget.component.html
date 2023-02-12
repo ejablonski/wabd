@@ -1,10 +1,12 @@
 <div class="countdown-widget-container">
   <div class="row">
     <div class="col-md-6 sm-12">
-      <span>{{ title }}</span>
+      <span>{{ this.title }}</span>
     </div>
     <div class="col-md-6 sm-12">
-      <span class="countdown-clock">{{ time }}</span>
+      <span class="countdown-clock">
+        {{ this.isDone ? this.messageWhenDone : this.countdownEnd - this.countdownNow | countdownLeft }}
+      </span>
     </div>
   </div>
 </div>

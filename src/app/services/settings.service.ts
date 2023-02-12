@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 
+import { CountdownWidgetSettingsModel } from '../models/countdown-widget-settings.model';
+
 /**
  * Service for holding and managing app settings. Changing one of the settings
  * values will emit signal via settingsChanged Subject.
@@ -9,10 +11,19 @@ import { Subject } from 'rxjs';
   providedIn: 'root'
 })
 export class SettingsService {
+  // Application settings
   private _latitude: number = 52.23
   private _longitude: number = 21.01
   private _tempUnit: string = 'celsius' // or fahrenheit
   private _timeFormat: string = '12' // or 24
+
+  // Default widgets settings
+  private _countdownWidgetSettings: CountdownWidgetSettingsModel = {
+    enabled: true,
+    title: 'Countdown',
+    messageWhenDone: 'Done',
+    countdownEnd: 0
+  }
 
   settingsChanged = new Subject<{[key: string]: number | string}>()
 
@@ -68,5 +79,9 @@ export class SettingsService {
 
     this._timeFormat = format
     this.settingsChanged.next({timeFormat: format})
+  }
+
+  public get countdownWidgetSettings(): CountdownWidgetSettingsModel {
+    return this._countdownWidgetSettings
   }
 }
