@@ -1,7 +1,9 @@
 <div class="widgets-container">
-    <div
-        class="widget-item"
-        *ngFor="let widget of widgets"
-    >
-    </div>
+  <app-countdown-widget
+    style="flex-grow: 0;"
+    *ngIf="this.settingsService.countdownWidgetSettings.enabled"
+  ></app-countdown-widget>
+  <app-weather-widget
+    style="flex-grow: 1;"
+  ></app-weather-widget>
 </div>

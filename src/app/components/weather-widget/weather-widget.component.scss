@@ -2,36 +2,94 @@
 @import '../../../scss/fonts';
 
 .weather-widget-container {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  height: 100%;
   background-color: $background-color;
   border-radius: $border-radius;
   padding: $margin;
-  height: 100%;
+  font-family: latolight;
+  color: white;
 
-  p, span {
-    font-family: latolight;
-    color: white;
-  }
-
-  span {
-    &.header-main-data {
+  .header {
+    .header-main-data {
       font-size: 10rem;
       line-height: 8rem;
     }
 
-    &.header-sub-data {
+    .header-sub-data {
       font-size: 3rem;
     }
+  }
 
-    &.quality {
+  .main {
+    flex-grow: 1;
+
+    .clock-container {
+      margin: $margin 0;
+
+      span {
+        position: relative;
+        font-size: 3rem;
+      }
+
+      &.am {
+        // Need to take chart margins into account
+        padding-left: $margin * 4;
+
+        span {
+          padding-left: $margin;
+          border-left: 2px solid white;
+        }
+      }
+      
+      &.pm {
+        // Need to take chart margins into account
+        padding-right: $margin * 4;
+
+        span {
+          padding-right: $margin;
+          border-right: 2px solid white;
+          float: right;
+        }
+      }
+    }
+
+    .chart-container {
+      position: relative;
+      width: 100%;
+      padding: $margin * 2;
+    }
+  }
+
+  .footer {
+    p {
+      margin: 0;
+    }
+
+    .quality {
       padding: 2px 4px;
       border-radius: $border-radius;
 
       &.good {
-        background-color: green;
+        background-color: rgba(80, 240, 230);
       }
 
-      &.bad {
-        background-color: red;
+      &.fair {
+        background-color: rgb(80, 204, 170);
+      }
+
+      &.moderate {
+        background-color: rgb(240, 230, 65);
+      }
+
+      &.poor {
+        background-color: rgb(255, 80, 80);
+      }
+
+      &.very-poor {
+        background-color: rgb(150, 0, 50);
       }
     }
   }

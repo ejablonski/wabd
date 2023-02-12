@@ -1,9 +1,13 @@
-import { Injectable } from '@angular/core';
+import {
+  Injectable,
+  OnDestroy
+} from '@angular/core';
 import {
   HttpClient,
   HttpParams
 } from '@angular/common/http';
 import {
+  Subscription,
   Observable,
   forkJoin,
   of,
@@ -32,15 +36,17 @@ import { SettingsService } from './settings.service';
 @Injectable({
   providedIn: 'root'
 })
-export class OpenMeteoService {
+export class OpenMeteoService implements OnDestroy {
   private forcastEndpoint: string = 'https://api.open-meteo.com/v1/forecast'
   private airQualityEndpoint: string = 'https://air-quality-api.open-meteo.com/v1/air-quality'
-  
+
+  private openMeteoSubcription: Subscription = new Subscription()
+
   constructor(
     private httpClient: HttpClient,
     private settings: SettingsService
   ) {}
-  
+
   /**
    * Make an request for a forcast for today.
    * @remarks Response will be translated to WeatherData model.
@@ -48,8 +54,8 @@ export class OpenMeteoService {
    * @throws New observable with error data if request cannot be made
    * or request data is invalid.
   */
- getForecastForToday(): Observable<WeatherDataModel[]> {
-    let weatherData: WeatherDataModel[] = []
+ getForecastForToday(): Observable<WeatherDataModel> {
+    let weatherData: WeatherDataModel = {} as WeatherDataModel
     let requestParams: HttpParams = new HttpParams()
     let forcastParams: HttpParams = new HttpParams()
     let airQualityParams: HttpParams = new HttpParams()
@@ -70,7 +76,7 @@ export class OpenMeteoService {
 
     airQualityParams = requestParams.appendAll(
       {
-        'hourly': ['pm10', 'pm2_5']
+        'hourly': ['european_aqi']
       }
     )
 
@@ -80,26 +86,26 @@ export class OpenMeteoService {
     const airQualityData$ = this.httpClient
       .get(this.airQualityEndpoint, { params: airQualityParams })
 
-    forkJoin([forcastData$, airQualityData$])
+    this.openMeteoSubcription = forkJoin([forcastData$, airQualityData$])
       .pipe(
         catchError(error => { return throwError(() => new Error(error.message))}),
-        map(
-          data => {
-            for(let i = 0; i < 24; i++) {
-              weatherData.push({
-                temp: (data[0] as OpenMeteoDataModel).hourly.temperature_2m[i],
-                snowfall: (data[0] as OpenMeteoDataModel).hourly.snowfall[i],
-                rain: (data[0] as OpenMeteoDataModel).hourly.rain[i],
-                showers: (data[0] as OpenMeteoDataModel).hourly.showers[i],
-                pm10: (data[1] as OpenMeteoDataModel).hourly.pm10[i],
-                pm2_5: (data[1] as OpenMeteoDataModel).hourly.pm2_5[i]
-              })
-            }
-          }
-        )
+        map(response => {
+          weatherData.temp = (response[0] as OpenMeteoDataModel).hourly.temperature_2m
+          weatherData.snowfall = (response[0] as OpenMeteoDataModel).hourly.snowfall
+          weatherData.rain = (response[0] as OpenMeteoDataModel).hourly.rain
+          weatherData.showers = (response[0] as OpenMeteoDataModel).hourly.showers
+          weatherData.european_aqi = (response[1] as OpenMeteoDataModel).hourly.european_aqi
+          weatherData.chartData = [{
+            data: (response[0] as OpenMeteoDataModel).hourly.temperature_2m.slice(0, 24)
+          }]
+        })
       )
       .subscribe()
 
     return of(weatherData)
+  }
+
+  ngOnDestroy(): void {
+    this.openMeteoSubcription.unsubscribe()
   }
 }

@@ -7,7 +7,6 @@ export interface OpenMeteoDataModel {
     showers: number[]
     snowfall: number[]
     temperature_2m: number[]
-    pm2_5: number[]
-    pm10: number[]
+    european_aqi: number[]
   }
 }

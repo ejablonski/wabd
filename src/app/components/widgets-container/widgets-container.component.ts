@@ -1,10 +1,8 @@
 import {
-  Component,
-  OnInit
+  Component
 } from '@angular/core';
 
-import { WeatherWidgetComponent } from '../weather-widget/weather-widget.component';
-import { Widget } from 'src/app/interfaces';
+import { SettingsService } from 'src/app/services/settings.service';
 
 /**
  * This component is a widgets displaying container. Widgets (with a exception
@@ -16,14 +14,6 @@ import { Widget } from 'src/app/interfaces';
   templateUrl: './widgets-container.component.html',
   styleUrls: ['./widgets-container.component.scss']
 })
-export class WidgetsContainerComponent implements OnInit {
-  widgets: Widget[] = []
-
-  constructor() {}
-
-  ngOnInit(): void {
-    this.widgets.push(new Widget());
-    this.widgets.push(new WeatherWidgetComponent())
-    this.widgets.push(new Widget())
-  }
+export class WidgetsContainerComponent {
+  constructor(public settingsService: SettingsService) {}
 }

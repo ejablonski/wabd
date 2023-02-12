@@ -1,14 +1,17 @@
-<div class="weather-widget-container">
-  <div class="row">
+<div
+  class="weather-widget-container"
+  *ngIf="(this.weatherData$ | async) as weatherData"
+>
+  <div class="row header">
     <div class="col-md-6 sm-12">
       <div class="row">
         <div class="col-sm-4">
-          <span class="header-main-data">31</span>
+          <span class="header-main-data">{{ (this.currentDate$ | async) | date:'d' }}</span>
         </div>
         <div class="col-sm-8">
           <div class="row">
-            <span class="header-sub-data">April</span>
-            <span class="header-sub-data">Monday</span>
+            <span class="header-sub-data">{{ (this.currentDate$ | async) | date:'EEEE' }}</span>
+            <span class="header-sub-data">{{ (this.currentDate$ | async) | date:'LLLL' }}</span>
           </div>
         </div>
       </div>
@@ -22,17 +25,48 @@
           </div>
         </div>
         <div class="col-sm-4">
-          <span class="header-main-data">-2</span>
+          <span class="header-main-data">
+              {{ (this.weatherData$ | async)!.temp[(this.currentDate$ | async)!.getHours()] | temperature }}
+          </span>
         </div>
       </div>
     </div>
   </div>
-  <div class="row">
-    <div class="chart">
-
+  <div class="row main">
+    <div
+      class="clock-container"
+      [ngClass]="this.daysProgress <= 50 ? 'am' : 'pm'"
+    >
+      <span
+        [ngStyle]="this.daysProgress <= 50 ? {'left': this.daysProgress + '%'} : {'right': (100 - this.daysProgress) + '%'}"
+      >
+        {{ (this.currentDate$ | async)! | date:'hh:mm' }}
+      </span>
+    </div>
+    <div class="chart-container">
+      <canvas
+        baseChart
+        [type]="'line'"
+        [legend]="false"
+        [datasets]="(this.weatherData$ | async)?.chartData"
+        [labels]="chartLabels"
+        [options]="chartOptions"
+        aria-label="Chart of a temperature forcast for today."
+        role="img"
+      >
+        <p>Your browser does not support the canvas element.</p>
+      </canvas>
     </div>
   </div>
-  <div class="row">
-    <p>Air quality: <span class="footer-label quality good">GOOD</span></p>
+  <div class="footer">
+    <p>Air quality: 
+      <span
+        class="footer-label quality"
+        [ngClass]="(this.weatherData$ | async)!.european_aqi[(this.currentDate$ | async)!.getHours()] | euAqi:'-' | lowercase"
+        *ngIf="(this.weatherData$ | async)?.european_aqi && (this.currentDate$ | async)?.getHours()"
+      >
+          {{ (this.weatherData$ | async)!.european_aqi[(this.currentDate$ | async)!.getHours()] | euAqi }}
+      </span>
+    </p>
   </div>
 </div>

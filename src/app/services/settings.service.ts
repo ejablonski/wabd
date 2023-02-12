@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 
+import { WeatherWidgetSettingsModel } from '../models/weather-widget-settings.model';
 import { CountdownWidgetSettingsModel } from '../models/countdown-widget-settings.model';
+import { MessageWidgetSettingsModel } from '../models/message-widget-settings.model';
 
 /**
  * Service for holding and managing app settings. Changing one of the settings
@@ -18,11 +20,20 @@ export class SettingsService {
   private _timeFormat: string = '12' // or 24
 
   // Default widgets settings
+  private _weatherWidgetSettings: WeatherWidgetSettingsModel = {
+    chartResponsive: true,
+    chartMaintainAspectRatio: false
+  }
   private _countdownWidgetSettings: CountdownWidgetSettingsModel = {
     enabled: true,
     title: 'Countdown',
     messageWhenDone: 'Done',
     countdownEnd: 0
+  }
+  private _messageWidgetSettings: MessageWidgetSettingsModel = {
+    enabled: false,
+    title: 'Title',
+    message: 'Message'
   }
 
   settingsChanged = new Subject<{[key: string]: number | string}>()
@@ -81,7 +92,15 @@ export class SettingsService {
     this.settingsChanged.next({timeFormat: format})
   }
 
+  public get weatherWidgetSettings(): WeatherWidgetSettingsModel {
+    return this._weatherWidgetSettings
+  }
+
   public get countdownWidgetSettings(): CountdownWidgetSettingsModel {
     return this._countdownWidgetSettings
+  }
+
+  public get messageWidgetSettings(): MessageWidgetSettingsModel {
+    return this._messageWidgetSettings
   }
 }
