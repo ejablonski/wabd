@@ -1,4 +1,15 @@
-import { Component } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy
+} from '@angular/core';
+import {
+  Observable,
+  Subscription
+} from 'rxjs';
+
+import { WikipediaService } from 'src/app/services/wikipedia.service';
+import { DidYouKnowDataModel } from 'src/app/models/did-you-know-data.model';
 
 /**
  * Widget that fetches random article from (by default) Wikipedia.
@@ -8,13 +19,19 @@ import { Component } from '@angular/core';
   templateUrl: './did-you-know-widget.component.html',
   styleUrls: ['./did-you-know-widget.component.scss']
 })
-export class DidYouKnowWidgetComponent {
-  img: string = ''
-  content: string = 'Did you know?'
-  sourceName: string = 'Wikipedia'
-  sourceUrl: string = 'en.wikipedia.org'
+export class DidYouKnowWidgetComponent implements OnInit, OnDestroy {
+  dykData$: Observable<DidYouKnowDataModel> = new Observable<DidYouKnowDataModel>
+  wikipediaSubscription: Subscription = new Subscription
+  imgSource: string = ''
 
-  onClick() {
-    // todo: open new link defined in sourceUrl: string
+  constructor(private wikipediaService: WikipediaService) {}
+
+  ngOnInit(): void {
+    this.dykData$ = this.wikipediaService.getRandomArticle()
+    this.wikipediaSubscription = this.dykData$.subscribe()
+  }
+
+  ngOnDestroy(): void {
+    this.wikipediaSubscription.unsubscribe()
   }
 }

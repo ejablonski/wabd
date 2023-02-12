@@ -1,7 +1,6 @@
-<div
-  class="dyk-widget-container"
-  (click)="onClick()"
->
-  <img src="{{ img }}" alt="{{ sourceName }}">
-  <p>{{ content }}</p>
+<div class="dyk-widget-container">
+  <a href="{{ (this.dykData$ | async)!.articleSource }}">
+    <img src="{{ this.imgSource }}" alt="{{ (this.dykData$ | async)!.articleTitle }}">
+    <p>{{ (this.dykData$ | async)!.articleExcerpt }}</p>
+  </a>
 </div>
