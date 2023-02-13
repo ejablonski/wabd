@@ -11,10 +11,10 @@ import {
   of
 } from 'rxjs';
 
+import { WeatherDataModel } from 'src/app/models/weather-data.model';
+
 import { OpenMeteoService } from 'src/app/services/open-meteo.service';
 import { SettingsService } from 'src/app/services/settings.service';
-
-import { WeatherDataModel } from 'src/app/models/weather-data.model';
 import { ClockService } from 'src/app/services/clock.service';
 import { LocalStorageService } from 'src/app/services/local-storage.service';
 
@@ -43,7 +43,7 @@ export class WeatherWidgetComponent implements OnInit, OnDestroy {
     private openMeteoService: OpenMeteoService,
     private clockService: ClockService
   ) {}
-  
+
   ngOnInit(): void {
     const newDate: Date = new Date()
     const localStorageTimestamp: string | null = this.localStorageService.timestamp
