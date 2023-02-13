@@ -6,11 +6,16 @@ import {
 } from '@angular/router';
 
 import { SettingsContainerComponent } from '../components/settings-container/settings-container.component';
+import { WeatherWidgetSettingsComponent } from '../components/weather-widget-settings/weather-widget-settings.component';
 
 const routes: Routes = [
   {
     path: '',
     component: SettingsContainerComponent
+  },
+  {
+    path: 'weather',
+    component: WeatherWidgetSettingsComponent
   }
 ];
 
@@ -22,8 +27,6 @@ const routes: Routes = [
     CommonModule,
     RouterModule.forChild(routes)
   ],
-  exports: [
-    RouterModule
-  ]
+  exports: [RouterModule]
 })
-export class SettingsContainerModule {}
+export class SettingsContainerModule { }

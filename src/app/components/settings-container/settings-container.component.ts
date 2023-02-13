@@ -9,6 +9,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./settings-container.component.scss']
 })
 export class SettingsContainerComponent implements OnInit {
+  widgets: string[] = ['Countdown', 'Did you know']
+
   constructor() {}
 
   ngOnInit(): void {}
