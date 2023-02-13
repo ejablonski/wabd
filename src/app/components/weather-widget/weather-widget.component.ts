@@ -62,12 +62,25 @@ export class WeatherWidgetComponent implements OnInit, OnDestroy {
     this.chartOptions = {
       responsive: this.settingsService.weatherWidgetSettings.chartResponsive,
       maintainAspectRatio: this.settingsService.weatherWidgetSettings.chartMaintainAspectRatio,
-      scales: { y: [{ ticks: { stepSize:0, precision: 0, callback: function(value: number) {
-        if (Math.floor(value) === value) {
-            return value;
+      elements: {
+        point: {
+          pointBackgroundColor: 'rgba(255, 255, 255, 1)'
+        },
+        line: {
+          borderColor: 'rgba(255, 255, 255, 1)'
         }
-        return value
-    } }}]}
+      },
+      scales:
+        {
+          y:
+          {
+            ticks:
+            {
+              stepSize: 0,
+              precision: 0
+            }
+          }
+        }
     }
 
     if(this.isDataStored && localStorageData !== null) {
@@ -94,6 +107,18 @@ export class WeatherWidgetComponent implements OnInit, OnDestroy {
 
     this.clockSubscription.unsubscribe()
   }
+
+  // floorChartData(chartData: { data: number[] }[]): { data: number[] }[] {
+  //   var newData: number[] = []
+
+  //   chartData[0].data.forEach(el => {
+  //     newData.push(Math.floor(el))
+  //   });
+
+  //   chartData[0].data = newData
+
+  //   return chartData
+  // }
 
   /**
    * Update properties with new JS Date value.

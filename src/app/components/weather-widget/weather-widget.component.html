@@ -38,7 +38,10 @@
       [ngClass]="this.daysProgress <= 50 ? 'am' : 'pm'"
     >
       <span
-        [ngStyle]="this.daysProgress <= 50 ? {'left': this.daysProgress + '%'} : {'right': (100 - this.daysProgress) + '%'}"
+        [ngStyle]="
+          this.daysProgress <= 50 ?
+            { 'left': 'calc(' + this.daysProgress + '% - 2rem)' } :
+            { 'right': (100 - this.daysProgress) + '%' }"
       >
         {{ (this.currentDate$ | async)! | date:'hh:mm' }}
       </span>
@@ -62,7 +65,10 @@
     <p>Air quality: 
       <span
         class="footer-label quality"
-        [ngClass]="(this.weatherData$ | async)!.european_aqi[(this.currentDate$ | async)!.getHours()] | euAqi:'-' | lowercase"
+        [ngClass]="
+          (this.weatherData$ | async)!.european_aqi[(this.currentDate$ | async)!.getHours()]
+          | euAqi:'-'
+          | lowercase"
         *ngIf="(this.weatherData$ | async)?.european_aqi && (this.currentDate$ | async)?.getHours()"
       >
           {{ (this.weatherData$ | async)!.european_aqi[(this.currentDate$ | async)!.getHours()] | euAqi }}
