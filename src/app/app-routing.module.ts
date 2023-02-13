@@ -5,12 +5,17 @@ import {
 } from '@angular/router';
 
 import { SettingsContainerComponent } from './components/settings-container/settings-container.component';
-import { WidgetsContainerComponent } from './components/widgets-container/widgets-container.component';
 
 const routes: Routes = [
-  { path: '', component: WidgetsContainerComponent },
-  { path: 'settings', component: SettingsContainerComponent },
-  { path: '**', redirectTo: '/not-found' }
+  {
+    path: '',
+    loadChildren: () => import('./modules/widgets-container.module').then(m=> m.WidgetsContainerModule)
+  },
+  {
+    path: 'settings',
+    loadChildren: () => import('./modules/settings-container.module').then(m => m.SettingsContainerModule)
+  },
+  { path: '**', redirectTo: '' }
 ];
 
 @NgModule({
