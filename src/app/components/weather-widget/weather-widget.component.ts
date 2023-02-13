@@ -7,6 +7,7 @@ import {
   Observable,
   Subscription,
   tap,
+  map,
   of
 } from 'rxjs';
 
@@ -15,6 +16,7 @@ import { SettingsService } from 'src/app/services/settings.service';
 
 import { WeatherDataModel } from 'src/app/models/weather-data.model';
 import { ClockService } from 'src/app/services/clock.service';
+import { LocalStorageService } from 'src/app/services/local-storage.service';
 
 @Component({
   selector: 'app-weather-widget',
@@ -33,15 +35,29 @@ export class WeatherWidgetComponent implements OnInit, OnDestroy {
   chartOptions: { [key: string]: any } = {}
 
   daysProgress: number = 100
+  isDataStored: boolean = false
 
   constructor(
+    private localStorageService: LocalStorageService,
     private settingsService: SettingsService,
     private openMeteoService: OpenMeteoService,
     private clockService: ClockService
   ) {}
   
   ngOnInit(): void {
-    this.updateDate()
+    const newDate: Date = new Date()
+    const localStorageTimestamp: string | null = this.localStorageService.timestamp
+    const localStorageData: string | null = this.localStorageService.getItem('weatherData')
+
+    this.localStorageService.subscribeToStorage('weatherData')
+    this.updateDate(newDate)
+
+    if(localStorageTimestamp === null) {
+      this.localStorageService.timestamp = newDate.toDateString()
+    } else if (localStorageTimestamp === newDate.toDateString()){
+      this.isDataStored = true
+    }
+
     this.chartLabels = this.createChartLabels(this.settingsService.timeFormat)
     this.chartOptions = {
       responsive: this.settingsService.weatherWidgetSettings.chartResponsive,
@@ -54,31 +70,37 @@ export class WeatherWidgetComponent implements OnInit, OnDestroy {
     } }}]}
     }
 
-    this.weatherData$ = this.openMeteoService.getForecastForToday()
-    this.openMeteoSubscription = this.weatherData$.subscribe()
+    if(this.isDataStored && localStorageData !== null) {
+      this.weatherData$ = of(JSON.parse(localStorageData))
+    } else {
+      this.weatherData$ = this.openMeteoService.getForecastForToday()
+      this.openMeteoSubscription = this.weatherData$.subscribe()
+    }
 
     this.clockTick$ = this.clockService.clock
     this.clockSubscription = this.clockTick$
       .pipe(
         tap(() => {
-          this.updateDate()
+          this.updateDate(new Date())
         })
       )
       .subscribe()
   }
 
   ngOnDestroy(): void {
-    this.openMeteoSubscription.unsubscribe()
+    if(!this.isDataStored) {
+      this.openMeteoSubscription.unsubscribe()
+    }
+
     this.clockSubscription.unsubscribe()
   }
 
   /**
    * Update properties with new JS Date value.
    */
-  private updateDate() {
-    const newDate = new Date()
-    this.currentDate$ = of(newDate)
-    this.daysProgress = this.calculateDaysProgress(newDate)
+  private updateDate(date: Date) {
+    this.currentDate$ = of(date)
+    this.daysProgress = this.calculateDaysProgress(date)
   }
 
   /**

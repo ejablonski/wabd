@@ -22,6 +22,7 @@ import { WeatherDataModel } from '../models/weather-data.model';
 import { OpenMeteoDataModel } from '../models/open-meteo.model';
 
 import { SettingsService } from './settings.service';
+import { LocalStorageService } from './local-storage.service';
 
 /**
  * This service is fetching data from OpenMeteo REST API. Covers version 1
@@ -44,7 +45,8 @@ export class OpenMeteoService implements OnDestroy {
 
   constructor(
     private httpClient: HttpClient,
-    private settings: SettingsService
+    private settingsService: SettingsService,
+    private localStorageService: LocalStorageService
   ) {}
 
   /**
@@ -62,14 +64,14 @@ export class OpenMeteoService implements OnDestroy {
   
     requestParams = requestParams.appendAll(
       {
-        'latitude': this.settings.latitude,
-        'longitude': this.settings.longitude,
+        'latitude': this.settingsService.latitude,
+        'longitude': this.settingsService.longitude,
       }
     )
 
     forcastParams = requestParams.appendAll(
       {
-        'temperature_unit': this.settings.tempUnit,
+        'temperature_unit': this.settingsService.tempUnit,
         'hourly': ['temperature_2m', 'snowfall', 'rain', 'showers']
       }
     )
@@ -96,8 +98,10 @@ export class OpenMeteoService implements OnDestroy {
           weatherData.showers = (response[0] as OpenMeteoDataModel).hourly.showers
           weatherData.european_aqi = (response[1] as OpenMeteoDataModel).hourly.european_aqi
           weatherData.chartData = [{
-            data: (response[0] as OpenMeteoDataModel).hourly.temperature_2m.slice(0, 24)
-          }]
+              data: (response[0] as OpenMeteoDataModel).hourly.temperature_2m.slice(0, 24)
+            }]
+
+        this.localStorageService.setItem('weatherData', JSON.stringify(weatherData))
         })
       )
       .subscribe()
