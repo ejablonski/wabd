@@ -1,32 +1,63 @@
 <div class="settings-container">
   <h1>Settings:</h1>
-  <form>
+  <form
+    (ngSubmit)="onSubmit()"
+    #f="ngForm"
+  >
   <div class="row">
       <div class="form-group col-md">
       <label for="latitude">Latitude</label>
-      <input type="number" class="form-control" id="latitude" placeholder="Latitude">
+      <input
+        type="number"
+        id="latitude"
+        class="form-control"
+        placeholder="Latitude"
+        name="latitude"
+        ngModel
+        [value]="this.latitude"
+      >
       </div>
       <div class="form-group col-md">
       <label for="longitude">Longitude</label>
-      <input type="number" class="form-control" id="Longitude" placeholder="Longitude">
+      <input
+        type="number"
+        id="Longitude"
+        class="form-control"
+        placeholder="Longitude"
+        name="longitude"
+        ngModel
+      >
       </div>
   </div>
   <fieldset class="form-group">
       <div class="row">
-      <div class="form-group">
-          <legend class="col-form-label">Time format:</legend>
-          <div class="form-check">
-          <input class="form-check-input" type="radio" name="timeFormat" id="timeFormat12" value="">
+      <label for="tempFormat">Time format:</label>
+      <div class="form-check">
+          <input
+            id="timeFormat12"
+            class="form-check-input"
+            type="radio"
+            name="timeFormat"
+            ngModel
+            value="12"
+            checked
+          >
           <label class="form-check-label" for="timeFormat12">
-              12 hours
+              12
           </label>
           </div>
           <div class="form-check">
-          <input class="form-check-input" type="radio" name="timeFormat" id="timeFormat24" value="" checked>
-          <label class="form-check-label" for="timeFormat24">
-              24 hours
+          <input
+            id="timeFormat24"
+            class="form-check-input"
+            type="radio"
+            name="tempFormat"
+            ngModel
+            value="24"
+          >
+          <label class="form-check-label" for="tempFormatF">
+              24
           </label>
-          </div>
       </div>
       </div>
   </fieldset>
@@ -34,18 +65,41 @@
       <div class="form-group">
       <label for="tempFormat">Temperature format:</label>
       <div class="form-check">
-          <input class="form-check-input" type="radio" name="tempFormat" id="tempFormatC" value="" checked>
-          <label class="form-check-label" for="tempFormatC">
+          <input
+            id="tempUnitC"
+            class="form-check-input"
+            type="radio"
+            name="tempUnit"
+            ngModel
+            value="celsius"
+            checked
+          >
+          <label class="form-check-label" for="tempUnitC">
               Celsius
           </label>
           </div>
           <div class="form-check">
-          <input class="form-check-input" type="radio" name="tempFormat" id="tempFormatF" value="">
-          <label class="form-check-label" for="tempFormatF">
+          <input
+            id="tempUnitF"
+            class="form-check-input"
+            type="radio"
+            name="tempUnit"
+            ngModel
+            value="fahrenheit"
+          >
+          <label class="form-check-label" for="tempUnitF">
               Fahrenheit
           </label>
       </div>
       </div>
+  </div>
+  <div class="row">
+    <button
+      class="btn btn-primary"
+      type="submit"
+    >
+      Submit
+    </button>
   </div>
   </form>
 </div>

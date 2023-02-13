@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import {
   RouterModule,
   Routes
@@ -21,10 +22,12 @@ const routes: Routes = [
 
 @NgModule({
   declarations: [
-    SettingsContainerComponent
+    SettingsContainerComponent,
+    WeatherWidgetSettingsComponent
   ],
   imports: [
     CommonModule,
+    FormsModule,
     RouterModule.forChild(routes)
   ],
   exports: [RouterModule]
